@@ -13,6 +13,7 @@ import SettingsScreen from '../screens/Settings';
 import CategoriesScreen from '../screens/Categories'
 import RecipeDetailScreen from '../screens/RecipeDetail'
 import MyRecipesScreen from '../screens/MyRecipes'
+import CreateRecipeScreen from '../screens/CreateRecipe'
 
 import Menu from './Menu';
 import Header from '../components/Header';
@@ -149,6 +150,12 @@ const HomeStack = createStackNavigator({
       
     })
   },
+  CreateRecipe: {
+    screen: CreateRecipeScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <Header  back title="Crear Receta" navigation={navigation} />,
+    })
+  },
   Pro: {
     screen: ProScreen,
     navigationOptions: ({navigation}) => ({
@@ -189,10 +196,10 @@ const AppStack = createDrawerNavigator(
       }),
     },
     Favorites: {
-      screen: ProScreen,
+      screen: HomeStack,
       navigationOptions: (navOpt) => ({
         drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Pro" title="Favoritos" />
+          <Drawer focused={focused} screen="Home" title="Favoritos" />
         ),
       }),
     },
@@ -243,18 +250,18 @@ const AppStack = createDrawerNavigator(
       },
     },
     SignIn: {
-      screen: ProScreen,
+      screen: HomeStack,
       navigationOptions: (navOpt) => ({
         drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Pro" title="Iniciar Sesión" />
+          <Drawer focused={focused} screen="Home" title="Iniciar Sesión" />
         ),
       }),
     },
     SignUp: {
-      screen: ProScreen,
+      screen: HomeStack,
       navigationOptions: (navOpt) => ({
         drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Pro" title="Registrarse" />
+          <Drawer focused={focused} screen="Home" title="Registrarse" />
         ),
       }),
     },

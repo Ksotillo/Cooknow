@@ -4,6 +4,7 @@ import { TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native
 import { Button, Block, NavBar, Input, Text, theme } from 'galio-framework';
 
 import Icon from './Icon';
+import { Consumer } from "../constants/context";
 import materialTheme from '../constants/Theme';
 
 const { height, width } = Dimensions.get('window');
@@ -34,7 +35,8 @@ const iPhoneX = () => Platform.OS === 'ios' && (height === 812 || width === 812 
 // );
 
 const CreateButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <Consumer>{ ({ onCreate }) =>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('CreateRecipe', { onCreate: onCreate } )}>
     <Icon
       family="MaterialIcons"
       size={19}
@@ -43,10 +45,25 @@ const CreateButton = ({isWhite, style, navigation}) => (
     />
     {/* <Block middle style={styles.notify} /> */}
   </TouchableOpacity>
+  }</Consumer>
 );
 
+// const DeleteButton = ({isWhite, style, navigation}) => (
+//   <Consumer>{ ({ onDelete, recipe }) =>
+//   <TouchableOpacity style={[styles.button, style]} onPress={onDelete()}>
+//     <Icon
+//       family="MaterialCommunityIcons"
+//       size={22}
+//       name="delete-circle"
+//       color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+//     />
+//     {/* <Block middle style={styles.notify} /> */}
+//   </TouchableOpacity>
+//   }</Consumer>
+// );
+
 const SearchButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Pro')}>
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Home')}>
     <Icon
       size={16}
       family="Galio"
@@ -82,6 +99,10 @@ class Header extends React.Component {
       case 'MyRecipes':
         return ([
           <CreateButton key='create-myrecipes' navigation={navigation} />
+        ]);
+      case 'RecipeDetail':
+        return ([
+          // <DeleteButton key='create-myrecipes' navigation={navigation} />
         ]);
       case 'Categories':
         return ([
@@ -141,7 +162,7 @@ class Header extends React.Component {
         color="black"
         style={styles.search}
         placeholder={this.handleSearch(title)}
-        onFocus={() => navigation.navigate('Pro')}
+        onFocus={() => navigation.navigate('Home')}
         iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="zoom-split" family="Galio" />}
       />
     )
@@ -158,7 +179,7 @@ class Header extends React.Component {
             <Text size={16} style={styles.tabTitle}>{tabTitleLeft || 'Categorías'}</Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Pro')}>
+        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Home')}>
           <Block row middle>
             <Icon size={16} name="chart-growth" family="Galio" style={{ paddingRight: 8 }} />
             <Text size={16} style={styles.tabTitle}>{tabTitleRight || 'Populares'}</Text>

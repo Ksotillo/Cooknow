@@ -5,25 +5,48 @@ import { Block, Text, theme } from 'galio-framework';
 
 import materialTheme from '../constants/Theme';
 import {  Recipe } from '../components/';
-import recpes from '../constants/recipes'
+import {  Consumer } from '../constants/context';
+// import recipes from '../constants/recipes'
+
 
 const { width } = Dimensions.get('screen');
 
 class MyRecipes extends React.Component {
+  
+  renderRecipes = recipes => {
+    const items = []
+
+    for (const [index, value] of recipes.entries()) {
+      if (value) {
+        items.push(<Recipe horizontal key={index} recipe={value} />)
+      }
+    }
+
+    return(
+      <Block flex>
+          {items}
+      </Block>
+    )
+  }
+
   render() {
     const { navigation, recipe, horizontal, full, style, priceColor, imageStyle } = this.props;
     const imageStyles = [styles.image, full ? styles.fullImage : styles.horizontalImage, imageStyle];
+    
 
     return (
+      <Consumer>{ ({ recipes }) =>
         <Block flex center style={styles.home}>
             <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.recipes}>
-                <Block flex>
-                    <Recipe horizontal recipe={recpes[0]} />
-                    <Recipe horizontal recipe={recpes[1]} />
-                    <Recipe horizontal recipe={recpes[2]} />
-                    <Recipe horizontal recipe={recpes[3]} />
+                {/* <Block flex> */}
+                  {this.renderRecipes(recipes)}
+                  
+                    {/* <Recipe horizontal recipe={recipes[0]} />
+                    <Recipe horizontal recipe={recipes[1]} />
+                    <Recipe horizontal recipe={recipes[2]} />
+                    <Recipe horizontal recipe={recipes[3]} /> */}
                     {/* <Recipe recipe={recipes[4]} full />
                     <Recipe recipe={recipes[5]} horizontal />
                     <Block flex row>
@@ -32,10 +55,10 @@ class MyRecipes extends React.Component {
                     </Block> */}
                     {/* <Recipe recipe={recipes[8]} horizontal /> */}
                     {/* <Recipe recipe={recipes[9]} full /> */}
-                </Block>
+                {/* </Block> */}
             </ScrollView>
-        </Block>
-
+        </Block>}
+        </Consumer>
     );
   }
 }

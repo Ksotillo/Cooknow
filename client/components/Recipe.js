@@ -4,29 +4,40 @@ import { StyleSheet, Dimensions, Image, TouchableWithoutFeedback } from 'react-n
 import { Block, Text, theme } from 'galio-framework';
 
 import materialTheme from '../constants/Theme';
+import { Consumer } from "../constants/context";
 
 const { width } = Dimensions.get('screen');
 
 class Recipe extends React.Component {
+
+  handleSelection = (recipe, navigation, onSelect) => {
+    onSelect(recipe);
+    navigation.navigate('RecipeDetail', { recipe: recipe });
+  }
+
   render() {
     const { navigation, recipe, horizontal, full, style, priceColor, imageStyle } = this.props;
     const imageStyles = [styles.image, full ? styles.fullImage : styles.horizontalImage, imageStyle];
 
-    return (
-      <Block row={horizontal} card flex style={[styles.recipe, styles.shadow, style]}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('RecipeDetail', { recipe: recipe })}>
-          <Block flex style={[styles.imageContainer, styles.shadow]}>
-            <Image source={{ uri: recipe.image }} style={imageStyles} />
-          </Block>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('RecipeDetail', { recipe: recipe })}>
-          <Block flex space="between" style={styles.recipeDescription}>
-            <Text size={14} style={styles.recipeTitle}>{recipe.title}</Text>
-            <Text size={12} muted={!priceColor} color={priceColor}>Dificultad: {recipe.difficulty}</Text>
-          </Block>
-        </TouchableWithoutFeedback>
-      </Block>
-    );
+    if (recipe) {
+      return (
+        <Block row={horizontal} card flex style={[styles.recipe, styles.shadow, style]}>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('RecipeDetail', { recipe: recipe })}>
+            <Block flex style={[styles.imageContainer, styles.shadow]}>
+              <Image source={{ uri: recipe.image }} style={imageStyles} />
+            </Block>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate('RecipeDetail', { recipe: recipe })}>
+            <Block flex space="between" style={styles.recipeDescription}>
+              <Text size={14} style={styles.recipeTitle}>{recipe.title}</Text>
+              <Text size={12} muted={!priceColor} color={priceColor}>Dificultad: {recipe.difficulty}</Text>
+            </Block>
+          </TouchableWithoutFeedback>
+        </Block>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

@@ -15,6 +15,7 @@ import React from 'react';
 import { Platform, StatusBar, Image } from 'react-native';
 import { AppLoading, Asset } from 'expo';
 import { Block, GalioProvider } from 'galio-framework';
+import { Provider } from './constants/context';
 
 import Screens from './navigation/Screens';
 import { Images, recipes, materialTheme } from './constants/';
@@ -43,7 +44,64 @@ function cacheImages(images) {
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
+	recipes,
+	// recipe: {}
   };
+
+//   Metodos de crear, editar y eliminar
+
+//   Crear
+
+  handleRecipeCreated = recipe =>
+  this.setState(({ recipes }) => ({
+      recipes: [
+          ...recipes,
+          recipe
+      ]
+  }))
+
+  //Editar
+
+  handleRecipeEdit = recipe =>
+        this.setState( ({ recipes }) => ({
+            recipes: [
+                ...recipes.filter(indexedRecipe => indexedRecipe.title !== recipe.title),
+                recipe
+            ]
+		}))
+		
+
+		// Eliminar
+
+		handleRecipeDeleted = title =>{
+			if (title) {
+				this.setState(({ recipes }) => ({
+					// recipes: recipes.filter(recipe => recipe.title !== title)
+					recipes: recipes.filter( recipe => {
+						console.log(recipe.title !== title, recipe.title, title)
+						return recipe.title !== title;
+					} )
+				}))
+			}
+		}
+		
+		//  Seleccion
+
+		handleRecipeSelected = title =>
+        this.setState(({ recipes }) => ({//Voy a agarrar todo el arreglo de recipes
+            recipe: recipes.find(recipe => recipe.title === title),//Y voy a buscar y retornar la app con el id seleccionado
+        }))
+
+
+  getContext = () => ({
+    ...this.state,
+	onCreate: this.handleRecipeCreated,
+	onEdit: this.handleRecipeEdit,
+	onDelete: this.handleRecipeDeleted,
+	onSelect: this.handleRecipeSelected
+})
+
+
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -57,10 +115,12 @@ export default class App extends React.Component {
     } else {
       return (
         <GalioProvider theme={materialTheme}>
-          <Block flex>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <Screens />
-          </Block>
+          <Provider value={this.getContext()}>
+            <Block flex>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <Screens />
+            </Block>
+          </Provider>
         </GalioProvider>
       );
     }

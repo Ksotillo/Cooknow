@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, FlatList } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import { Button, Block, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo';
 
 import { Icon } from '../components';
 import { Images, materialTheme } from '../constants';
 import { HeaderHeight } from "../constants/utils";
+import { Consumer } from "../constants/context";
 
 const { width, height } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -21,10 +22,21 @@ getIngredients(ingredients){
     return ingre;
 }
 
+delete(title, onDelete, navigation){
+	onDelete(title);
+	navigation.navigate('Home');
+}
+
+edit(recipe, onEdit, navigation){
+	navigation.navigate('CreateRecipe', { recipe: recipe, onEdit: onEdit });
+}
+
+// this.delete(recipe.title, onDelete, navigation)
   render() {
     const  { navigation } = this.props;
     const recipe  = navigation.getParam('recipe');
     return (
+      <Consumer>{ ({ onDelete, onEdit }) =>
       <Block flex style={styles.recipeDetail}>
         <Block flex>
           <ImageBackground
@@ -37,18 +49,22 @@ getIngredients(ingredients){
                 <Block row space="between">
                   <Block row>
                     <Block middle style={styles.pro}>
-                      <Text size={16} color="white">{recipe.description}</Text>
+                      <Text size={16} color="white" style={{height: '33%'}}>{recipe.description} </Text>
+					  <Button style={{backgroundColor: materialTheme.COLORS.WARNING, height: '33%', width: '100%'}}  onPress={() => this.edit(recipe, onEdit, navigation)}>Editar receta</Button>
+					  <Button style={{backgroundColor: materialTheme.COLORS.ERROR, height: '33%', width: '100%'}}  onPress={() => this.delete(recipe.title, onDelete, navigation)}>Eliminar receta</Button>
                     </Block>
                     {/* <Text color="white" size={16} muted style={styles.seller}>Seller</Text>
                     <Text size={16} color={materialTheme.COLORS.WARNING}>
-                      4.8 <Icon name="shape-star" family="GalioExtra" size={14} />
-                    </Text> */}
+					4.8 <Icon name="shape-star" family="GalioExtra" size={14} />
+				</Text> */}
                   </Block>
+				
                   <Block>
                     {/* <Text color={theme.COLORS.MUTED} size={16}>
                       <Icon name="pin-3" family="Galio" color={theme.COLORS.MUTED} size={16} />
                       {`  `} Los Angeles, CA
-                      </Text> */}
+					</Text> */}
+					{/* <Button onPress={() => onDelete(recipe.title)}>Eliminar receta</Button> */}
                   </Block>
                 </Block>
               </Block>
@@ -65,7 +81,7 @@ getIngredients(ingredients){
               </Block>
               <Block middle>
                 <Text bold size={12} style={{marginBottom: 8}}>Tiempo</Text>
-                <Text muted size={12}>{recipe.time/60} minutos</Text>
+                <Text muted size={12}>{(recipe.time/60).toFixed(1)} minutos</Text>
               </Block>
               <Block middle>
                 <Text bold size={12} style={{marginBottom: 8}}>Dificultad</Text>
@@ -93,7 +109,8 @@ getIngredients(ingredients){
               
           </ScrollView>
         </Block>
-      </Block>
+      </Block>}
+	  </Consumer>
     );
   }
 }
@@ -127,10 +144,10 @@ const styles = StyleSheet.create({
   },
   pro: {
     backgroundColor: materialTheme.COLORS.LABEL,
-    paddingHorizontal: 6,
+    // paddingHorizontal: 6,
     marginRight: theme.SIZES.BASE / 2,
     borderRadius: 4,
-    height: 19,
+    height: 75,
     width: '100%',
   },
   seller: {

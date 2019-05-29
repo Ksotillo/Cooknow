@@ -62,7 +62,7 @@ export default class Profile extends React.Component {
             </Block>
             <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
               <Text size={16}>Mis Recetas</Text>
-              <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>Ver todos</Text>
+              <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('MyRecipes')}>Ver todos</Text>
             </Block>
             <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
               <Block row space="between" style={{ flexWrap: 'wrap' }} >

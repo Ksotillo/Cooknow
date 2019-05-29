@@ -3,11 +3,19 @@ import { StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { Button, Block, Text, Input, theme } from 'galio-framework';
 
 import { Icon, Recipe } from '../components/';
+import { Consumer } from '../constants/context';
 
 const { width } = Dimensions.get('screen');
-import recipes from '../constants/recipes';
+// import recipes from '../constants/recipes';
 
 export default class Home extends React.Component {
+
+  // const add = (recipe) => {
+  //   const  repices = { ...this.state.repices };
+  //  recipes.push(recipe)
+  //  this.setState({ recipes })
+  // }
+
   renderSearch = () => {
     const { navigation } = this.props;
     const iconCamera = <Icon size={16} color={theme.COLORS.MUTED} name="camera-18" family="GalioExtra" />
@@ -44,36 +52,57 @@ export default class Home extends React.Component {
     )
   }
 
-  renderRecipes = () => {
+  renderRecipes = (recipes) => {
+	
+	const items = []
+// 0,3,5,8
+	for (let i = 0; i<recipes.length; i++) {
+		if (i%10 === 0 || i%10 === 3 || i%10=== 5 || i%10 === 8) {
+			items.push(<Recipe key={i} recipe={recipes[i]} horizontal />)
+		} else if ( i%10 === 1 || i%10 === 6 ) {
+			items.push(<Block flex row key={i*100}>
+				<Recipe key={i} recipe={recipes[i]} style={{ marginRight: theme.SIZES.BASE }} />
+				<Recipe key={i+1} recipe={recipes[i + 1]} />
+			</Block>)
+			i++;
+		} else {
+			items.push(<Recipe key={i} recipe={recipes[i]} full />)
+		}
+	}
+
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.recipes}>
-        <Block flex>
-          <Recipe recipe={recipes[0]} horizontal />
-          <Block flex row>
-            <Recipe recipe={recipes[1]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Recipe recipe={recipes[2]} />
-          </Block>
-          <Recipe recipe={recipes[3]} horizontal />
-          <Recipe recipe={recipes[4]} full />
-          <Recipe recipe={recipes[5]} horizontal />
-          <Block flex row>
-            <Recipe recipe={recipes[6]} style={{ marginRight: theme.SIZES.BASE }} />
-            <Recipe recipe={recipes[7]} />
-          </Block>
-          {/* <Recipe recipe={recipes[8]} horizontal /> */}
-          {/* <Recipe recipe={recipes[9]} full /> */}
-        </Block>
-      </ScrollView>
+		
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={styles.recipes}>
+				<Block flex>
+					{items}
+				{/* <Recipe recipe={recipes[0]} horizontal />
+				<Block flex row>
+					<Recipe recipe={recipes[1]} style={{ marginRight: theme.SIZES.BASE }} />
+					<Recipe recipe={recipes[2]} />
+				</Block>
+				<Recipe recipe={recipes[3]} horizontal />
+				<Recipe recipe={recipes[4]} full />
+				<Recipe recipe={recipes[5]} horizontal />
+				<Block flex row>
+					<Recipe recipe={recipes[6]} style={{ marginRight: theme.SIZES.BASE }} />
+					<Recipe recipe={recipes[7]} />
+				</Block>
+				<Recipe recipe={recipes[8]} horizontal />
+				<Recipe recipe={recipes[9]} full /> */}
+				</Block>
+			</ScrollView>
     )
   }
 
   render() {
     return (
-      <Block flex center style={styles.home}>
-        {this.renderRecipes()}
-      </Block>
+	<Consumer>{ ({ recipes }) =>
+		<Block flex center style={styles.home}>
+			{this.renderRecipes(recipes)}
+		</Block>}
+	</Consumer>
     );
   }
 }
