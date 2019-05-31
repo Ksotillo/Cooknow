@@ -14,10 +14,15 @@
     "preset": "jest-expo",
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
-    }
+    },
+    "transformIgnorePatterns": [
+      "!node_modules/react-runtime"
+    ],
+    "setupFiles": [
+      "./jestSetup.js"
+    ]
   },
   "dependencies": {
-    "babel-jest": "^24.8.0",
     "expo": "^32.0.0",
     "galio-framework": "^0.4.4",
     "react": "16.5.0",
@@ -27,9 +32,11 @@
     "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
+    "babel-jest": "^24.8.0",
     "babel-preset-expo": "^5.0.0",
     "cross-env": "^5.2.0",
     "expo-cli": "^2.4.0",
+    "jest": "^24.8.0",
     "jest-expo": "^31.0.0"
   }
 }
