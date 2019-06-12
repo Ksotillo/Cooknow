@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo';
 import { Icon } from '../components';
 import { Images, materialTheme } from '../constants';
 import { HeaderHeight } from "../constants/utils";
+import { Consumer } from '../constants/context';
 
 const { width, height } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
@@ -13,6 +14,7 @@ const thumbMeasure = (width - 48 - 32) / 3;
 export default class Profile extends React.Component {
   render() {
     return (
+      <Consumer>{ ({ recipes, favorites }) =>
       <Block flex style={styles.profile}>
         <Block flex>
           <ImageBackground
@@ -48,11 +50,11 @@ export default class Profile extends React.Component {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block row space="between" style={{ padding: theme.SIZES.BASE, }}>
               <Block middle>
-                <Text bold size={12} style={{marginBottom: 8}}>2</Text>
+                <Text bold size={12} style={{marginBottom: 8}}>{recipes.length}</Text>
                 <Text muted size={12}>Mis recetas</Text>
               </Block>
               <Block middle>
-                <Text bold size={12} style={{marginBottom: 8}}>10</Text>
+                <Text bold size={12} style={{marginBottom: 8}}>{favorites.length}</Text>
                 <Text muted size={12}>Recetas favoritas</Text>
               </Block>
               <Block middle>
@@ -78,7 +80,7 @@ export default class Profile extends React.Component {
             </Block>
             <Block row space="between" style={{ paddingVertical: 16, alignItems: 'baseline' }}>
               <Text size={16}>Recetas favoritas</Text>
-              <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Home')}>Ver todos</Text>
+              <Text size={12} color={theme.COLORS.PRIMARY} onPress={() => this.props.navigation.navigate('Favorites')}>Ver todos</Text>
             </Block>
             <Block style={{ paddingBottom: -HeaderHeight * 2 }}>
               <Block row space="between" style={{ flexWrap: 'wrap' }} >
@@ -110,7 +112,8 @@ export default class Profile extends React.Component {
             </Block>
           </ScrollView>
         </Block>
-      </Block>
+      </Block>}
+      </Consumer>
     );
   }
 }
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
     marginRight: theme.SIZES.BASE / 2,
     borderRadius: 4,
     height: 19,
-    width: 190,
+    width: 200,
   },
   seller: {
     marginRight: theme.SIZES.BASE / 2,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, FlatList } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, Image, ImageBackground, Platform, FlatList,TouchableOpacity } from 'react-native';
 import { Button, Block, Text, theme } from 'galio-framework';
 import { LinearGradient } from 'expo';
 
@@ -31,12 +31,71 @@ edit(recipe, onEdit, navigation){
 	navigation.navigate('CreateRecipe', { recipe: recipe, onEdit: onEdit });
 }
 
+favAdd(recipe, onFavAdded, navigation) {
+	onFavAdded(recipe);
+	navigation.navigate('RecipeDetail', { recipe: recipe });
+}
+
+favDelete(recipe, onFavDeleted, navigation) {
+	onFavDeleted(recipe.title);
+	navigation.navigate('RecipeDetail', { recipe: recipe });
+}
+
+renderActionButtons(recipe, onEdit, onDelete, recipeIsFav, onFavAdded, onFavDeleted, navigation){
+	return (
+		<Block style={{position: 'absolute', right: 0}}>
+			{ !recipeIsFav(recipe.title) ? (
+				<TouchableOpacity style={{position: 'absolute', right: 90, top: -100}} onPress={() => this.favAdd(recipe, onFavAdded, navigation)}>
+					<Icon
+					family="MaterialIcons"
+					size={30}
+					name="favorite-border"
+					color={theme.COLORS.WHITE}
+					/>
+					{/* <Block middle style={styles.notify} /> */}
+				</TouchableOpacity>
+			) : (
+			<TouchableOpacity style={{position: 'absolute', right: 90, top: -100}} onPress={() => this.favDelete(recipe, onFavDeleted, navigation)}>
+				<Icon
+				family="MaterialIcons"
+				size={30}
+				name="favorite"
+				color={theme.COLORS.WHITE}
+				/>
+				{/* <Block middle style={styles.notify} /> */}
+			</TouchableOpacity>
+			)
+
+			}
+			<TouchableOpacity style={{position: 'absolute', right: 50, top: -100}} onPress={() => this.edit(recipe, onEdit, navigation)}>
+				<Icon
+				family="MaterialCommunityIcons"
+				size={30}
+				name="circle-edit-outline"
+				color={theme.COLORS.WHITE}
+				/>
+				{/* <Block middle style={styles.notify} /> */}
+			</TouchableOpacity>
+			<TouchableOpacity style={{position: 'absolute', right: 10, top: -100}} onPress={() => this.delete(recipe.title, onDelete, navigation)}>
+				<Icon
+				family="MaterialCommunityIcons"
+				size={30}
+				name="delete-circle"
+				color={theme.COLORS.WHITE}
+				/>
+				{/* <Block middle style={styles.notify} /> */}
+			</TouchableOpacity>
+
+		</Block>
+	)
+}
+
 // this.delete(recipe.title, onDelete, navigation)
   render() {
     const  { navigation } = this.props;
     const recipe  = navigation.getParam('recipe');
     return (
-      <Consumer>{ ({ onDelete, onEdit }) =>
+      <Consumer>{ ({ onDelete, onEdit, recipeIsFav, onFavAdded, onFavDeleted }) =>
       <Block flex style={styles.recipeDetail}>
         <Block flex>
           <ImageBackground
@@ -45,13 +104,12 @@ edit(recipe, onEdit, navigation){
             imageStyle={styles.recipeDetailImage}>
             <Block flex style={styles.recipeDetailDetails}>
               <Block style={styles.recipeDetailTexts}>
-                <Text color="white" size={28} style={{ paddingBottom: 8 }}>{recipe.title}</Text>
+				  {this.renderActionButtons(recipe, onEdit, onDelete, recipeIsFav, onFavAdded, onFavDeleted, navigation)}
+				<Text color="white" size={28} style={{ paddingBottom: 8 }}>{recipe.title}</Text>
                 <Block row space="between">
                   <Block row>
                     <Block middle style={styles.pro}>
-                      <Text size={16} color="white" style={{height: '33%'}}>{recipe.description} </Text>
-					  <Button style={{backgroundColor: materialTheme.COLORS.WARNING, height: '33%', width: '100%'}}  onPress={() => this.edit(recipe, onEdit, navigation)}>Editar receta</Button>
-					  <Button style={{backgroundColor: materialTheme.COLORS.ERROR, height: '33%', width: '100%'}}  onPress={() => this.delete(recipe.title, onDelete, navigation)}>Eliminar receta</Button>
+                      <Text size={16} color="white" >{recipe.description} </Text>
                     </Block>
                     {/* <Text color="white" size={16} muted style={styles.seller}>Seller</Text>
                     <Text size={16} color={materialTheme.COLORS.WARNING}>
@@ -144,10 +202,10 @@ const styles = StyleSheet.create({
   },
   pro: {
     backgroundColor: materialTheme.COLORS.LABEL,
-    // paddingHorizontal: 6,
+    paddingHorizontal: 6,
     marginRight: theme.SIZES.BASE / 2,
     borderRadius: 4,
-    height: 75,
+    height: 25,
     width: '100%',
   },
   seller: {

@@ -18,7 +18,7 @@ import { Block, GalioProvider } from 'galio-framework';
 import { Provider } from './constants/context';
 
 import Screens from './navigation/Screens';
-import { Images, recipes, materialTheme } from './constants/';
+import { Images, recipes, categories, materialTheme } from './constants/';
 
 // cache app images
 const assetImages = [
@@ -45,8 +45,9 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
 	recipes,
-	// recipe: {}
+	favorites: []
   };
+
 
 //   Metodos de crear, editar y eliminar
 
@@ -93,12 +94,43 @@ export default class App extends React.Component {
         }))
 
 
+		//   Añadir a favoritos
+
+		handleRecipeFavAdded = recipe =>
+		this.setState(({ favorites }) => ({
+			favorites: [
+				...favorites,
+				recipe
+			]
+		}))
+
+		// Eliminar de favoritos
+
+		handleRecipeFavDeleted = title =>{
+			if (title) {
+				this.setState(({ favorites }) => ({
+					// recipes: recipes.filter(recipe => recipe.title !== title)
+					favorites: favorites.filter( recipe => {
+						console.log(recipe.title !== title, recipe.title)
+						return recipe.title !== title;
+					} )
+				}))
+			}
+		}
+
+		recipeIsFav = title => {
+			return this.state.favorites.find(recipe => recipe.title === title);
+		}
+
   getContext = () => ({
     ...this.state,
 	onCreate: this.handleRecipeCreated,
 	onEdit: this.handleRecipeEdit,
 	onDelete: this.handleRecipeDeleted,
-	onSelect: this.handleRecipeSelected
+	onSelect: this.handleRecipeSelected,
+	onFavAdded: this.handleRecipeFavAdded,
+	onFavDeleted: this.handleRecipeFavDeleted,
+	recipeIsFav: this.recipeIsFav,
 })
 
 

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 4,
     height: 19,
-    width: 190,
+    width: 200,
   },
   seller: {
     marginRight: 16,

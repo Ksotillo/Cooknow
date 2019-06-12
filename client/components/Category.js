@@ -9,7 +9,7 @@ const { width } = Dimensions.get('screen');
 
 class Category extends React.Component {
   render() {
-    const { navigation, category, horizontal, full, style, priceColor, imageStyle } = this.props;
+    const { navigation, category, categories, horizontal, full, style, priceColor, imageStyle } = this.props;
     const imageStyles = [styles.image, full ? styles.fullImage : styles.horizontalImage, imageStyle];
 
     return (
@@ -31,11 +31,13 @@ class Category extends React.Component {
                 source={{ uri: category.image }}
                 style={[styles.imageBlock, { width: width - (theme.SIZES.BASE * 2), height: 252 }]}
                 imageStyle={{ width: width - (theme.SIZES.BASE * 2), height: 252 }}>
+				  <TouchableWithoutFeedback onPress={() => navigation.navigate('RecipeByCategory', {categories: categories} )}>
                 <Block style={styles.categoryTitle}>
-                  <Text size={18} bold color={theme.COLORS.WHITE}>{category.title}</Text>
+                  <Text size={18} bold color={theme.COLORS.WHITE}>{category.category}</Text>
                 </Block>
+            </TouchableWithoutFeedback>
               </ImageBackground>
-            </Block>
+        </Block>
     );
   }
 }

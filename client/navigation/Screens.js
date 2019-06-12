@@ -14,6 +14,9 @@ import CategoriesScreen from '../screens/Categories'
 import RecipeDetailScreen from '../screens/RecipeDetail'
 import MyRecipesScreen from '../screens/MyRecipes'
 import CreateRecipeScreen from '../screens/CreateRecipe'
+import SearchResultsScreen from '../screens/SearchResults'
+import FavoritesScreen from '../screens/Favorites'
+import RecipeByCategoryScreen from '../screens/RecipeByCategory'
 
 import Menu from './Menu';
 import Header from '../components/Header';
@@ -104,6 +107,7 @@ const RecipeDetailStack = createStackNavigator({
   transitionConfig,
 })
 
+
 const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
@@ -126,14 +130,14 @@ const HomeStack = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: ({navigation}) => ({
-      header: <Header white transparent title="Perfil" navigation={navigation} />,
+      header: <Header back white transparent title="Perfil" navigation={navigation} />,
       headerTransparent: true,
     })
   },
   Categories: {
     screen: CategoriesScreen,
     navigationOptions: ({navigation}) => ({
-      header: <Header search white title="Categorías" navigation={navigation} />,
+      header: <Header back title="Categorías" navigation={navigation} />,
     })
   },
   RecipeDetail: {
@@ -147,6 +151,27 @@ const HomeStack = createStackNavigator({
     screen: MyRecipesScreen,
     navigationOptions: ({ navigation }) => ({
       header: <Header search back title="Mis recetas" navigation={navigation} />,
+      
+    })
+  },
+  SearchResults: {
+    screen: SearchResultsScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <Header search back title="Resultados:" navigation={navigation} />,
+      
+    })
+  },
+  Favorites: {
+    screen: FavoritesScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <Header  back title="Mis recetas favoritas" navigation={navigation} />,
+      
+    })
+  },
+  RecipeByCategory: {
+    screen: RecipeByCategoryScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <Header  back title="Recetas disponibles:" navigation={navigation} />,
       
     })
   },
@@ -196,10 +221,10 @@ const AppStack = createDrawerNavigator(
       }),
     },
     Favorites: {
-      screen: HomeStack,
+      screen: FavoritesScreen,
       navigationOptions: (navOpt) => ({
         drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Home" title="Favoritos" />
+          <Drawer focused={focused} screen="Favorites" title="Favoritos" />
         ),
       }),
     },
@@ -235,36 +260,36 @@ const AppStack = createDrawerNavigator(
         ),
       }),
     },
-    Components: {
-      screen: ComponentsStack,
-      navigationOptions: (navOpt) => ({
-        drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Components" title="Components" />
-        ),
-      }),
-    },
+    // Components: {
+    //   screen: ComponentsStack,
+    //   navigationOptions: (navOpt) => ({
+    //     drawerLabel: ({focused}) => (
+    //       <Drawer focused={focused} screen="Components" title="Components" />
+    //     ),
+    //   }),
+    // },
     MenuDivider: {
       screen: HomeStack,
       navigationOptions: {
         drawerLabel: () => <Block style={{marginVertical: 8}}><Text>{` `}</Text></Block>,
       },
     },
-    SignIn: {
-      screen: HomeStack,
-      navigationOptions: (navOpt) => ({
-        drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Home" title="Iniciar Sesión" />
-        ),
-      }),
-    },
-    SignUp: {
-      screen: HomeStack,
-      navigationOptions: (navOpt) => ({
-        drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Home" title="Registrarse" />
-        ),
-      }),
-    },
+    // SignIn: {
+    //   screen: HomeStack,
+    //   navigationOptions: (navOpt) => ({
+    //     drawerLabel: ({focused}) => (
+    //       <Drawer focused={focused} screen="Home" title="Iniciar Sesión" />
+    //     ),
+    //   }),
+    // },
+    // SignUp: {
+    //   screen: HomeStack,
+    //   navigationOptions: (navOpt) => ({
+    //     drawerLabel: ({focused}) => (
+    //       <Drawer focused={focused} screen="Home" title="Registrarse" />
+    //     ),
+    //   }),
+    // },
   },
   Menu
 );

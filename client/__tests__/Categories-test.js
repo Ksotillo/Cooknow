@@ -1,10 +1,9 @@
 import React from 'react';
-import RecipeDetail from "../screens/RecipeDetail";
-
+import Categories from "../screens/Categories";
 import renderer from "react-test-renderer";
 
 
   test('renders correctly', () => {  
-    const tree = renderer.create(<RecipeDetail />).toJSON();
+  const tree = renderer.create(<Categories />).toJSON();
     expect(tree).toMatchSnapshot();
 })

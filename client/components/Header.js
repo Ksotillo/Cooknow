@@ -61,19 +61,28 @@ const CreateButton = ({isWhite, style, navigation}) => (
 //   </TouchableOpacity>
 //   }</Consumer>
 // );
-
-const SearchButton = ({isWhite, style, navigation}) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('Home')}>
+// navigation.navigate('MyRecipes')
+const SearchButton = ({isWhite, style, navigation, search}) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={() => navigation.navigate('SearchResults', { search }) }>
     <Icon
       size={16}
       family="Galio"
       name="zoom-split"
-      color={theme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+      color={theme.COLORS[isWhite ? 'WHITE' : 'MUTED']}
     />
   </TouchableOpacity>
 );
 
 class Header extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {textSearch: ''};
+	  }
+
+	  search = () => {
+		  console.log(this.state.textSearch)
+	  }
+
   handleLeftPress = () => {
     const { back, navigation } = this.props;
     return (back ? navigation.goBack() : navigation.openDrawer());
@@ -139,7 +148,7 @@ class Header extends React.Component {
     }
   }
 
-  handleSearch = (title) => {
+  handleSearchPlaceholder = (title) => {
     switch(title){
     	case 'Bienvenido':
         	return "¿Qué receta quieres hacer hoy?"
@@ -154,6 +163,24 @@ class Header extends React.Component {
     }
   }
 
+  handleSearch = (title, navigation) => {
+    switch(title){
+    	case 'Bienvenido':
+        	return <SearchButton key='search-product' navigation={navigation} isWhite={false} search={this.state.textSearch} />
+
+		case 'Resultados:':
+        	return <SearchButton key='search-product' navigation={navigation} isWhite={false} search={this.state.textSearch} />
+
+    	case 'Categorías':
+          	return <Icon size={16} color={theme.COLORS.MUTED} name="zoom-split" family="Galio" />
+
+		case 'Mis recetas':
+      		return <SearchButton key='search-product' navigation={navigation} isWhite={false} search={this.state.textSearch} />
+          default:
+			  break;
+    }
+  }
+
   renderSearch = () => {
     const { navigation, title } = this.props;
     return (
@@ -161,9 +188,11 @@ class Header extends React.Component {
         right
         color="black"
         style={styles.search}
-        placeholder={this.handleSearch(title)}
-        onFocus={() => navigation.navigate('Home')}
-        iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="zoom-split" family="Galio" />}
+        placeholder={this.handleSearchPlaceholder(title)}
+        // onFocus={() => navigation.navigate('Home')}
+          // iconContent={<Icon size={16} color={theme.COLORS.MUTED} name="zoom-split" family="Galio" />}
+		iconContent={this.handleSearch(title, navigation)}
+		onChangeText={(textSearch) => this.setState({textSearch})}
       />
     )
   }
