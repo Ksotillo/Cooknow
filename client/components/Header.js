@@ -2,6 +2,7 @@ import React from 'react';
 import { withNavigation } from 'react-navigation';
 import { TouchableOpacity, StyleSheet, Platform, Dimensions } from 'react-native';
 import { Button, Block, NavBar, Input, Text, theme } from 'galio-framework';
+import { Alert} from 'react-native'
 
 import Icon from './Icon';
 import { Consumer } from "../constants/context";
@@ -82,6 +83,17 @@ class Header extends React.Component {
 	  search = () => {
 		  console.log(this.state.textSearch)
 	  }
+
+	  // alert = () => {
+		// Alert.alert(
+		// 	'Función no disponible 😅',
+		// 	'¡Está función estará disponible en próximas actualizaciones!',
+		// 	[
+		// 	  {text: 'OK', onPress: () => console.log('OK Pressed')},
+		// 	],
+		// 	{cancelable: false},
+		//   );
+	  // }
 
   handleLeftPress = () => {
     const { back, navigation } = this.props;
@@ -208,10 +220,10 @@ class Header extends React.Component {
             <Text size={16} style={styles.tabTitle}>{tabTitleLeft || 'Categorías'}</Text>
           </Block>
         </Button>
-        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Home')}>
+        <Button shadowless style={styles.tab} onPress={() => navigation.navigate('Favorites')}>
           <Block row middle>
-            <Icon size={16} name="chart-growth" family="Galio" style={{ paddingRight: 8 }} />
-            <Text size={16} style={styles.tabTitle}>{tabTitleRight || 'Populares'}</Text>
+            <Icon size={16} name="heart-2" family="Galio" style={{ paddingRight: 8 }} />
+            <Text size={16} style={styles.tabTitle}>{tabTitleRight || 'Favoritos'}</Text>
           </Block>
         </Button>
       </Block>

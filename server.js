@@ -24,3 +24,6 @@ server.listen().then(({
 }) => {
     console.log(`Server listening on ${url}`)
 });
+
+
+// VIdeo 10 Apollo Server: Crear usuario o encontrar usuario, autenticacion

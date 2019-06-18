@@ -8,6 +8,7 @@ module.exports = gql `
         name: String
         email: String
         picture: String
+        recipes: [Recipe]
         favRecipes: [Recipe]
     }
 

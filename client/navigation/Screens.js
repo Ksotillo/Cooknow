@@ -118,7 +118,7 @@ const HomeStack = createStackNavigator({
   Settings: {
     screen: SettingsScreen,
     navigationOptions: ({navigation}) => ({
-      header: <Header back title="Configuración" navigation={navigation} />,
+      header: <Header back title="Configuración" navigation={navigation} />
     })
   },
   Components: {
@@ -208,7 +208,7 @@ const AppStack = createDrawerNavigator(
       screen: HomeStack,
       navigationOptions: (navOpt) => ({
         drawerLabel: ({focused}) => (
-          <Drawer focused={focused} screen="Home" title="Inicio" />
+          <Drawer focused={focused} screen="Home" title="Inicio"  />
         ),
       }),
     },
@@ -260,14 +260,14 @@ const AppStack = createDrawerNavigator(
         ),
       }),
     },
-    // Components: {
-    //   screen: ComponentsStack,
-    //   navigationOptions: (navOpt) => ({
-    //     drawerLabel: ({focused}) => (
-    //       <Drawer focused={focused} screen="Components" title="Components" />
-    //     ),
-    //   }),
-    // },
+    Components: {
+      screen: ComponentsStack,
+      navigationOptions: (navOpt) => ({
+        drawerLabel: ({focused}) => (
+          <Drawer focused={focused} screen="Components" title="Components" />
+        ),
+      }),
+    },
     MenuDivider: {
       screen: HomeStack,
       navigationOptions: {
